@@ -44,3 +44,19 @@ a {
     color-scheme: dark;
   }
 }
+
+.carousel-clip-path {
+  /* You will likely need to fine-tune these percentage values in your browser's dev tools */
+clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 75% 90%, 51% 90%, 46% 100%, 0 100%);
+}
+
+/* Ensure your custom animate-scrollDot is still here */
+@keyframes scrollDot {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-scrollDot {
+  animation: scrollDot 1.5s infinite;
+}
