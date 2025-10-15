@@ -1,5 +1,6 @@
 'use client';
 import { motion, useScroll, useTransform } from "framer-motion";
+import type { MotionValue } from "framer-motion";
 import { useRef } from "react";
 import Image from 'next/image';
 
@@ -12,7 +13,7 @@ type CardItem = {
 };
 
 // Update Card props to include rotateY
-type CardProps = CardItem & { scale: any; opacity: any; rotateY: any };
+type CardProps = CardItem & { scale: MotionValue<number>; opacity: MotionValue<number>; rotateY: MotionValue<number> };
 
 const cardItems: CardItem[] = [
     {
