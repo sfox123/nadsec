@@ -46,7 +46,7 @@ export default function Carousel() {
   const s = slides[index];
 
   return (
-    <section className="relative w-full bg-white">
+    <section className="relative overflow-hidden w-full bg-white">
       {/* Gray side gutters (desktop only) */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-60 bg-gray-500 hidden md:block" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-60 bg-gray-500 hidden md:block" />
