@@ -1,7 +1,7 @@
 'use client';
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Image from 'next/image'; // Recommended for Next.js
+import Image from 'next/image';
 
 // --- 1. Data and Types ---
 
@@ -10,6 +10,9 @@ type CardItem = {
     subtitle: string;
     title: string;
 };
+
+// Update Card props to include rotateY
+type CardProps = CardItem & { scale: any; opacity: any; rotateY: any };
 
 const cardItems: CardItem[] = [
     {
@@ -31,12 +34,10 @@ const cardItems: CardItem[] = [
 
 // --- 2. Card Component ---
 
-// Note: 'any' is used for Framer Motion's motion values (scale, opacity) for simplicity.
-const Card: React.FC<CardItem & { scale: any; opacity: any }> = ({ icon, subtitle, title, scale, opacity }) => {
+const Card: React.FC<CardProps> = ({ icon, subtitle, title, scale, opacity, rotateY }) => {
     return (
         <motion.div
             style={{ scale, opacity }}
-            // absolute is key for stacking and positioning within the sticky container
             className="absolute flex flex-col w-[90%] max-w-[700px] p-5 text-white text-center bg-gradient-to-b from-[#08084F] to-[#646464] border border-solid rounded-2xl justify-center items-center shadow-2xl"
         >
             <motion.div
@@ -44,21 +45,16 @@ const Card: React.FC<CardItem & { scale: any; opacity: any }> = ({ icon, subtitl
                 className="mb-4 flex justify-center items-center w-28 h-28"
             >
                 <motion.div
+                    // Apply the scroll-driven rotation here
+                    style={{ rotateY }}
                     className="flex justify-center items-center w-full h-full bg-white/10 backdrop-blur-md rounded-full"
-                    initial={{ rotateY: 0 }}
-                    // We keep whileInView here for the individual card's icon spin when it enters view
-                    whileInView={{ rotateY: 360 }}
-                    transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
-                    viewport={{ once: true }}
                 >
-                    {/* Use Next.js Image component for optimization */}
                     <Image
                         src={icon}
                         alt="icon"
                         width={80}
                         height={80}
                         className="object-contain"
-                        // Error handler for local development if images aren't found
                         onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'https://placehold.co/80x80/ffffff/000000?text=Icon'; }}
                     />
                 </motion.div>
@@ -76,31 +72,31 @@ const Card: React.FC<CardItem & { scale: any; opacity: any }> = ({ icon, subtitl
 const CardDisplay: React.FC = () => {
     const targetRef = useRef(null);
 
-    // FIX 1: The useScroll offset is set to 'start start' and 'end end'
-    // This ensures the 0 to 1 progress tracks the entire scroll distance of the h-[300vh] container.
     const { scrollYProgress } = useScroll({
         target: targetRef,
         offset: ["start start", "end end"],
     });
 
     // --- Animation Logic (Sequential Fade/Scale) ---
-
     // Card 1: 0% to 33%
     const scale1 = useTransform(scrollYProgress, [0, 0.165, 0.33], [0.8, 1, 0.8]);
     const opacity1 = useTransform(scrollYProgress, [0, 0.165, 0.33], [0, 1, 0]);
+    const rotateY1 = useTransform(scrollYProgress, [0, 0.33, 0.34], [0, 360, 360]); // New rotation logic
 
     // Card 2: 33% to 66%
     const scale2 = useTransform(scrollYProgress, [0.33, 0.495, 0.66], [0.8, 1, 0.8]);
     const opacity2 = useTransform(scrollYProgress, [0.33, 0.495, 0.66], [0, 1, 0]);
+    const rotateY2 = useTransform(scrollYProgress, [0.33, 0.66, 0.67], [0, 360, 360]); // New rotation logic
 
-    // Card 3: 66% to 100% (stays visible at the end)
+    // Card 3: 66% to 100%
     const scale3 = useTransform(scrollYProgress, [0.66, 0.825, 1], [0.8, 1, 1]);
     const opacity3 = useTransform(scrollYProgress, [0.66, 0.825, 1], [0, 1, 1]);
+    const rotateY3 = useTransform(scrollYProgress, [0.66, 1], [0, 360]); // New rotation logic
 
     const cards = [
-        { item: cardItems[0], scale: scale1, opacity: opacity1 },
-        { item: cardItems[1], scale: scale2, opacity: opacity2 },
-        { item: cardItems[2], scale: scale3, opacity: opacity3 },
+        { item: cardItems[0], scale: scale1, opacity: opacity1, rotateY: rotateY1 },
+        { item: cardItems[1], scale: scale2, opacity: opacity2, rotateY: rotateY2 },
+        { item: cardItems[2], scale: scale3, opacity: opacity3, rotateY: rotateY3 },
     ];
 
     return (
@@ -109,22 +105,21 @@ const CardDisplay: React.FC = () => {
             {/* The outer container: Creates the scroll distance (3x screen height) */}
             <div ref={targetRef} className="relative h-[300vh]">
 
-                {/* FIX 2: Sticky container adjusted.
-                  - top-0: Sticks it to the top of the viewport.
-                  - h-[500px]: Gives it a fixed height that fits the card.
-                  - pt-8: Pushes the card down from the 'Core Values' heading, removing the large gap.
-                  */}
+                {/* Sticky container adjusted:
+                    - top-16: Sticks it 4rem (top-16) down from the viewport edge.
+                    - The Heading is now inside the sticky container, but positioned absolutely 
+                      to stay above the cards. 
+                */}
                 <div className="sticky top-16 h-[500px] pt-8 flex justify-center overflow-hidden">
-                  <h1 className="uppercase --font-poppins absolute top-[-5] mb-6 text-center font-bold text-3xl mb-12 text-black">Core Values</h1>
-                    {cards.map(({ item, scale, opacity }, idx) => (
-                        <Card key={idx} {...item} scale={scale} opacity={opacity} />
+                    <h1 className="uppercase --font-poppins absolute top-[-5] mb-6 text-center font-bold text-3xl text-black">Core Values</h1>
+                    {cards.map(({ item, scale, opacity, rotateY }, idx) => (
+                        <Card key={idx} {...item} scale={scale} opacity={opacity} rotateY={rotateY} />
                     ))}
                 </div>
             </div>
 
-            {/* Optional: Add a placeholder div below the scroll engine to allow
-               the final card to remain in view before scrolling to other content. */}
-             <div className="h-[50vh]"></div>
+            {/* Placeholder for content below */}
+            <div className="h-[50vh]"></div>
         </section>
     );
 }
