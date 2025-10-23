@@ -1,64 +1,54 @@
 "use client";
-import React from "react";
 
-const App: React.FC = () => {
-  // Using a themed placeholder image since the local file path "/shield.png" is not available
-  const shieldPlaceholder = "/shield.png";
+import Image from "next/image";
 
+const About = () => {
   return (
-    <div className="p-4 sm:p-8 min-h-screen bg-gray-50 flex justify-center items-center">
-      {/* Main Container: Stacks vertically (flex-col) by default, switches to horizontal (md:flex-row) on medium screens and up */}
-      <div className="flex flex-col md:flex-row justify-center items-center w-full max-w-7xl mx-auto">
-        {/* === Image Section === 
-            - Order 1 on mobile (top), Order 3 on desktop (right)
-            - Image is small (w-32 h-32) on mobile and larger on desktop
-        */}
-        <div className="flex w-full md:w-1/3 justify-center items-center order-1 md:order-3 mb-6 md:mb-0">
-          <img
-            // Responsive sizing: w-32 h-32 on mobile, larger on desktop
-            className="w-32 h-32 md:w-[250px] md:h-[300px] object-contain rounded-xl shadow-2xl transition-all duration-300"
-            src={shieldPlaceholder}
-            alt="About Us Image"
-            onError={(e) => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src =
-                "https://placehold.co/128x128/1D4ED8/ffffff?text=SHIELD";
+    <section
+      id="about"
+      className="relative overflow-hidden bg-surface py-24"
+    >
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,_rgba(56,189,248,0.08),_transparent_60%)]" />
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-[1fr_auto_1fr]">
+        <div className="space-y-5">
+          <span className="inline-flex items-center rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-accent">
+            About us
+          </span>
+          <h2 className="text-3xl font-semibold text-foreground sm:text-4xl">
+            We blend military precision with client-first service.
+          </h2>
+          <p className="text-base leading-relaxed text-muted">
+            NADSEC Agencies is a private security partner delivering end-to-end
+            protection for businesses and communities. Our leadership draws
+            from decorated military careers and decades in corporate security,
+            giving us the insight to anticipate risks and the discipline to
+            respond decisively.
+          </p>
+          <p className="text-base leading-relaxed text-muted">
+            From executive protection to site operations, we invest in ongoing
+            training, technology, and transparent communication to ensure every
+            engagement reinforces our reputation for trust, professionalism, and
+            integrity.
+          </p>
+        </div>
+        <div className="hidden h-48 w-px self-stretch rounded-full bg-gradient-to-b from-accent/0 via-accent/40 to-accent/0 md:block" />
+        <div className="relative h-[420px] w-full overflow-hidden rounded-3xl border border-foreground/10 bg-surface shadow-card transition duration-500 hover:-translate-y-1 hover:shadow-elevated">
+          <Image
+            src="/shield.png"
+            alt="Security shield illustration"
+            fill
+            sizes="(max-width: 768px) 100vw, 32rem"
+            className="object-cover"
+            onError={(event) => {
+              const target = event.currentTarget;
+              target.onerror = null;
+              target.src = "https://placehold.co/600x800/0f172a/ffffff?text=NADSEC";
             }}
           />
         </div>
-
-        {/* === Divider Section === 
-            - Hidden on mobile (default) and appears as a vertical divider only on md screens and up
-        */}
-        <div className="hidden md:flex md:w-1/6 justify-center items-center order-2">
-          <div className="w-2 h-[300px] bg-gray-300 rounded-full shadow-inner"></div>
-        </div>
-
-        {/* === Text Section === 
-            - Order 2 on mobile (bottom), Order 1 on desktop (left)
-            - Full width on mobile, 1/3 width on desktop
-        */}
-        <div className="flex flex-col w-full md:w-1/3 p-6 order-2 md:order-1 bg-white rounded-xl shadow-xl">
-          <h1 className="uppercase my-4 font-extrabold text-3xl sm:text-4xl text-gray-900 border-b-2 border-indigo-500 pb-2">
-            About us
-          </h1>
-          <p className="text-base text-gray-700 font-normal leading-relaxed">
-            <strong className="text-indigo-600">NADSEC Agencies</strong> is a
-            newly established private-owned security company, a one-stop
-            solution for all security-related concerns for business entities,
-            including security guards, business security services, and more, to
-            meet each client's unique needs. We are incorporated as a limited
-            liability company and our competent team comes from a strong
-            military background and various fields in the corporate business
-            world. We understand the key factor to success lies in the
-            integration and quality of our excellent customer service; thus, we
-            are committed to serve as a trusted, responsible, and respected
-            business partner to our clients.
-          </p>
-        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default App;
+export default About;

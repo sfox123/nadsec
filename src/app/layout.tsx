@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/Components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,9 +44,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable}`}>
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} bg-surface text-foreground transition-colors duration-300`}
+      >
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

@@ -1,10 +1,8 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
-import type { MotionValue } from "framer-motion";
-import { useRef } from "react";
-import Image from "next/image";
 
-// --- 1. Data and Types ---
+import Image from "next/image";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { useRef } from "react";
 
 type CardItem = {
   icon: string;
@@ -12,7 +10,6 @@ type CardItem = {
   title: string;
 };
 
-// Update Card props to include rotateY
 type CardProps = CardItem & {
   scale: MotionValue<number>;
   opacity: MotionValue<number>;
@@ -22,106 +19,62 @@ type CardProps = CardItem & {
 const cardItems: CardItem[] = [
   {
     icon: "/icon_1.svg",
-    subtitle: "guards in guard's nature",
-    title: "Committed, Well Disciplined with High levels of Integrity",
+    subtitle: "Guards in guard's nature",
+    title: "Committed, well-disciplined professionals with unwavering integrity.",
   },
   {
     icon: "/icon_2.svg",
-    subtitle: "guards persona",
-    title: "Developed through frequent soft skills development initiatives",
+    subtitle: "Guard persona",
+    title: "Soft-skills coaching that nurtures empathy, awareness, and courtesy.",
   },
   {
     icon: "/icon_3.svg",
-    subtitle: "technical competency",
-    title:
-      "periodic emergency response training viz fire, first aid, physical defensive techniques",
+    subtitle: "Technical competency",
+    title: "Emergency readiness through ongoing fire, first-aid, and tactical training.",
   },
 ];
 
-// --- 2. Card Component ---
-
-const Card: React.FC<CardProps> = ({
-  icon,
-  subtitle,
-  title,
-  scale,
-  opacity,
-  rotateY,
-}) => {
-  return (
-    <motion.div
-      style={{ scale, opacity }}
-      className="absolute flex flex-col w-[90%] max-w-[700px] p-5 text-white text-center bg-gradient-to-b from-[#08084F] to-[#646464] border border-solid rounded-2xl justify-center items-center shadow-2xl"
-    >
+const Card = ({ icon, subtitle, title, scale, opacity, rotateY }: CardProps) => (
+  <motion.div
+    style={{ scale, opacity }}
+    className="absolute flex w-[90%] max-w-2xl flex-col items-center justify-center gap-5 rounded-3xl border border-foreground/10 bg-surface px-8 py-10 text-center shadow-elevated"
+  >
+    <motion.div style={{ perspective: 800 }} className="flex items-center justify-center">
       <motion.div
-        style={{ perspective: 800 }}
-        className="mb-4 flex justify-center items-center w-28 h-28"
+        style={{ rotateY }}
+        className="flex h-24 w-24 items-center justify-center rounded-full bg-accent/10"
       >
-        <motion.div
-          // Apply the scroll-driven rotation here
-          style={{ rotateY }}
-          className="flex justify-center items-center w-full h-full bg-white/10 backdrop-blur-md rounded-full"
-        >
-          <Image
-            src={icon}
-            alt="icon"
-            width={80}
-            height={80}
-            className="object-contain"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                "https://placehold.co/80x80/ffffff/000000?text=Icon";
-            }}
-          />
-        </motion.div>
+        <Image
+          src={icon}
+          alt=""
+          width={72}
+          height={72}
+          className="object-contain"
+        />
       </motion.div>
-      <h3 className="text-lg capitalize font-semibold mb-4">{subtitle}</h3>
-      <h1 className="text-xl font-medium">{title}</h1>
     </motion.div>
-  );
-};
+    <h3 className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">
+      {subtitle}
+    </h3>
+    <p className="text-lg font-medium text-foreground">{title}</p>
+  </motion.div>
+);
 
-// --- 3. Main Display Component ---
+const CardDisplay = () => {
+  const targetRef = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start start", "end end"] });
 
-const CardDisplay: React.FC = () => {
-  const targetRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"],
-  });
-
-  // --- Animation Logic (Sequential Fade/Scale) ---
-  // Card 1: 0% to 33%
-  const scale1 = useTransform(scrollYProgress, [0, 0.165, 0.33], [0.8, 1, 0.8]);
+  const scale1 = useTransform(scrollYProgress, [0, 0.165, 0.33], [0.8, 1, 0.85]);
   const opacity1 = useTransform(scrollYProgress, [0, 0.165, 0.33], [0, 1, 0]);
-  const rotateY1 = useTransform(
-    scrollYProgress,
-    [0, 0.33, 0.34],
-    [0, 360, 360]
-  ); // New rotation logic
+  const rotateY1 = useTransform(scrollYProgress, [0, 0.33, 0.34], [0, 360, 360]);
 
-  // Card 2: 33% to 66%
-  const scale2 = useTransform(
-    scrollYProgress,
-    [0.33, 0.495, 0.66],
-    [0.8, 1, 0.8]
-  );
-  const opacity2 = useTransform(
-    scrollYProgress,
-    [0.33, 0.495, 0.66],
-    [0, 1, 0]
-  );
-  const rotateY2 = useTransform(
-    scrollYProgress,
-    [0.33, 0.66, 0.67],
-    [0, 360, 360]
-  ); // New rotation logic
+  const scale2 = useTransform(scrollYProgress, [0.33, 0.495, 0.66], [0.8, 1, 0.85]);
+  const opacity2 = useTransform(scrollYProgress, [0.33, 0.495, 0.66], [0, 1, 0]);
+  const rotateY2 = useTransform(scrollYProgress, [0.33, 0.66, 0.67], [0, 360, 360]);
 
-  // Card 3: 66% to 100%
   const scale3 = useTransform(scrollYProgress, [0.66, 0.825, 1], [0.8, 1, 1]);
   const opacity3 = useTransform(scrollYProgress, [0.66, 0.825, 1], [0, 1, 1]);
-  const rotateY3 = useTransform(scrollYProgress, [0.66, 1], [0, 360]); // New rotation logic
+  const rotateY3 = useTransform(scrollYProgress, [0.66, 1], [0, 360]);
 
   const cards = [
     { item: cardItems[0], scale: scale1, opacity: opacity1, rotateY: rotateY1 },
@@ -130,26 +83,25 @@ const CardDisplay: React.FC = () => {
   ];
 
   return (
-    <section className="bg-white-100 py-2">
-      {/* The outer container: Creates the scroll distance (3x screen height) */}
-      <div ref={targetRef} className="relative h-[300vh]">
-        {/* Sticky container adjusted:
-                    - top-16: Sticks it 4rem (top-16) down from the viewport edge.
-                    - The Heading is now inside the sticky container, but positioned absolutely 
-                      to stay above the cards. 
-                */}
-        <div className="sticky top-16 h-[500px] pt-8 flex justify-center overflow-hidden">
-          <h1 className="uppercase --font-poppins absolute top-[-5] mb-6 text-center font-bold text-3xl text-black">
-            Core Values
-          </h1>
+    <section
+      id="values"
+      className="relative bg-surface py-32"
+    >
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,_rgba(79,70,229,0.12),_transparent_60%)]" />
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-accent">
+            Core values
+          </span>
+          <h2 className="mt-4 text-3xl font-semibold text-foreground sm:text-4xl">
+            The principles that keep every operation consistent and dependable.
+          </h2>
+        </div>
+      </div>
+      <div ref={targetRef} className="relative mt-20 h-[280vh]">
+        <div className="sticky top-24 flex h-[520px] items-center justify-center overflow-visible">
           {cards.map(({ item, scale, opacity, rotateY }, idx) => (
-            <Card
-              key={idx}
-              {...item}
-              scale={scale}
-              opacity={opacity}
-              rotateY={rotateY}
-            />
+            <Card key={idx} {...item} scale={scale} opacity={opacity} rotateY={rotateY} />
           ))}
         </div>
       </div>
