@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/Components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -26,19 +27,26 @@ module.exports = {
           50: "#FAFAFA",
           900: "#111318",
         },
+        background: "rgb(var(--background) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        surfaceMuted: "rgb(var(--surface-muted) / <alpha-value>)",
+        foreground: "rgb(var(--foreground) / <alpha-value>)",
+        muted: "rgb(var(--muted) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
         display: ["var(--font-display)"],
       },
       spacing: {
-        15: "3.75rem", // if XD uses 60px, map it here
+        15: "3.75rem",
       },
       borderRadius: {
-        xl2: "1rem", // match XD corner radii
+        xl2: "1rem",
       },
       boxShadow: {
         card: "0 8px 24px rgba(0,0,0,0.08)",
+        elevated: "0 18px 40px -12px rgba(15, 23, 42, 0.35)",
       },
       keyframes: {
         scrollDot: {

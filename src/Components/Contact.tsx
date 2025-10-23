@@ -1,97 +1,88 @@
-import React from "react";
+"use client";
 
-const Contact: React.FC = () => {
+const Contact = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-xl w-full max-w-4xl">
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 text-center mb-8 uppercase tracking-wide">
-          Contact Us
-        </h2>
-
-        <form className="space-y-6">
-          {/* Top row of inputs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label htmlFor="first-name" className="sr-only">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                placeholder="First Name"
-                className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base placeholder-gray-400"
-              />
-            </div>
-            <div>
-              <label htmlFor="last-name" className="sr-only">
-                Last Name (Optional)
-              </label>
-              <input
-                type="text"
-                name="last-name"
-                id="last-name"
-                autoComplete="family-name"
-                placeholder="Last Name (Optional)"
-                className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base placeholder-gray-400"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                autoComplete="email"
-                placeholder="Email Address"
-                required
-                className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base placeholder-gray-400"
-              />
-            </div>
-            <div>
-              <label htmlFor="mobile" className="sr-only">
-                Mobile (Optional)
-              </label>
-              <input
-                type="tel"
-                name="mobile"
-                id="mobile"
-                autoComplete="tel"
-                placeholder="Mobile (Optional)"
-                className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base placeholder-gray-400"
-              />
-            </div>
+    <section id="contact" className="bg-surface py-24">
+      <div className="mx-auto max-w-5xl rounded-3xl border border-foreground/10 bg-surface px-6 py-16 shadow-card backdrop-blur sm:px-12">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-accent">
+            Contact us
+          </span>
+          <h2 className="mt-4 text-3xl font-semibold text-foreground sm:text-4xl">
+            Partner with a team who takes your security as seriously as you do.
+          </h2>
+          <p className="mt-4 text-base text-muted">
+            Share your requirements and our operations team will respond within one business day with next steps tailored to your environment.
+          </p>
+        </div>
+        <form className="mt-12 grid gap-6 md:grid-cols-2">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="first-name" className="text-sm font-medium text-foreground">
+              First name
+            </label>
+            <input
+              id="first-name"
+              type="text"
+              placeholder="Jane"
+              className="rounded-2xl border border-foreground/10 bg-surface px-4 py-3 text-sm text-foreground shadow-inner transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
           </div>
-
-          {/* Message textarea */}
-          <div>
-            <label htmlFor="message" className="sr-only">
-              How Can We Help You
+          <div className="flex flex-col gap-2">
+            <label htmlFor="last-name" className="text-sm font-medium text-foreground">
+              Last name (optional)
+            </label>
+            <input
+              id="last-name"
+              type="text"
+              placeholder="Doe"
+              className="rounded-2xl border border-foreground/10 bg-surface px-4 py-3 text-sm text-foreground shadow-inner transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="email" className="text-sm font-medium text-foreground">
+              Email address
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              placeholder="you@company.com"
+              className="rounded-2xl border border-foreground/10 bg-surface px-4 py-3 text-sm text-foreground shadow-inner transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="phone" className="text-sm font-medium text-foreground">
+              Mobile (optional)
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              placeholder="(+94) 70 000 0000"
+              className="rounded-2xl border border-foreground/10 bg-surface px-4 py-3 text-sm text-foreground shadow-inner transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+          </div>
+          <div className="md:col-span-2 flex flex-col gap-2">
+            <label htmlFor="message" className="text-sm font-medium text-foreground">
+              How can we help?
             </label>
             <textarea
               id="message"
-              name="message"
-              rows={6} // Adjust rows for desired height
-              placeholder="How Can We Help You"
-              className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base placeholder-gray-400"
-            ></textarea>
+              rows={5}
+              placeholder="Share key details about your environment, concerns, and desired outcomes."
+              className="rounded-2xl border border-foreground/10 bg-surface px-4 py-3 text-sm text-foreground shadow-inner transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
           </div>
-
-          {/* Submit button */}
-          <div>
+          <div className="md:col-span-2 flex justify-center md:justify-end">
             <button
               type="submit"
-              className="w-full sm:w-auto px-8 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out block mx-auto"
+              className="inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-3 text-sm font-semibold text-surface transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              Submit
+              Submit inquiry
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 
